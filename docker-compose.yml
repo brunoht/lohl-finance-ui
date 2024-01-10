@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  lohl-finance-ui:
+    container_name: lohl-finance-ui
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "80:80"
+    user: 1000:1000
+    command: yarn dev
+
+networks:
+  default:
+    name: shared-network
+    external: true
