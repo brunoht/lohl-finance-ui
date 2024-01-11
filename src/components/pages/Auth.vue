@@ -3,63 +3,55 @@
   <layout>
 
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-
       <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-
         Acesso ao Painel Financeiro
-
       </h2>
-
     </div>
 
     <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-
       <form @submit.prevent="submit" class="space-y-6">
-
         <div>
-
           <div
               v-if="error || success"
               class="flex justify-center p-3 rounded text-center text-sm mb-5"
-              :class="{'bg-red-200': error, 'bg-green-200': success}"
+              :class="{ 'bg-red-200': error, 'bg-green-200': success }"
           >
-
             {{ error ?? success }}
-
           </div>
 
           <div class="flex items-center justify-between">
-
-            <label for="cpf" class="block text-sm font-medium leading-6 text-gray-900">
-
-              Digite seu CPF <small>apenas números</small>
-
-            </label>
-
+            <label for="email" class="block text-sm font-medium leading-6 text-gray-900">E-mail</label>
           </div>
 
           <div class="mt-2">
-
             <input
-                v-model="cpf"
+                v-model="email"
                 :disabled="loading"
-                id="cpf"
-                type="text"
-                maxlength="11"
+                id="email"
+                type="email"
                 required
                 autofocus
                 autocomplete="off"
-                placeholder="Ex: 11111111111"
                 class="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             >
 
-            <div
-                v-if="v$.cpf.$error"
-                class="text-xs text-red-400 mt-1"
-            >
+            <div class="flex items-center justify-between mt-2">
+              <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Senha</label>
+            </div>
 
-              O CPF digitado é inválido.
+            <div class="mt-2">
+              <input
+                  v-model="password"
+                  :disabled="loading"
+                  id="password"
+                  type="password"
+                  required
+                  class="px-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              >
+            </div>
 
+            <div v-if="v$.email.$error" class="text-xs text-red-400 mt-1">
+              O E-mail digitado é inválido.
             </div>
 
           </div>
@@ -108,13 +100,14 @@ export default {
   },
 
   beforeMount() {
-    const customerId = this.loadCustomerId()
-    if (customerId) this.$router.push({name: 'contracts'})
+    const token = this.loadToken()
+    if (token) this.$router.push({name: 'contracts'})
   },
 
   data() {
     return {
-      cpf: "",
+      email: "teste@lohl.com.br",
+      password: "123",
       error: null,
       success: null,
       loading: false
@@ -123,13 +116,12 @@ export default {
 
   validations () {
     return {
-      cpf: {
+      email: {
         required,
-        numeric,
-        minLength: minLength(11),
-        maxLength: maxLength(11),
-        $lazy: true
-      }
+      },
+      password: {
+        required,
+      },
     }
   },
 
@@ -143,24 +135,22 @@ export default {
         this.error = null
         this.success = null
 
-        api.post('/authenticate', {
-          cpf: this.cpf
+        api.post('/auth/login', {
+          email: this.email,
+          password: this.password,
         })
         .then((response) => {
-          const data = response.data.data
-
-          if(data.authorized) {
+          if (response.status === 200) {
             this.success = "Cadastro localizado. Redirecionando..."
-            this.persistCustomerId(data.customer_id)
+            const data = response.data
+            this.storeToken(data)
             this.$router.push({name: 'contracts'})
           } else {
             this.error = "Cadastro não localizado."
-            this.cpf = ""
           }
         })
         .catch((error) => {
           this.error = "Cadastro não localizado."
-          this.cpf = ""
           console.error(error);
         })
         .finally(() => {
@@ -170,13 +160,13 @@ export default {
       }
     },
 
-    persistCustomerId(customer_id) {
+    storeToken(token) {
       // TODO: implement a State Management (recommended: Pinia)
-      this.$cookies.set('lohl_customer_id', customer_id)
+      this.$cookies.set('lohl_token', token)
     },
 
-    loadCustomerId() {
-      return this.$cookies.get('lohl_customer_id')
+    loadToken() {
+      return this.$cookies.get('lohl_token')
     }
   }
 }

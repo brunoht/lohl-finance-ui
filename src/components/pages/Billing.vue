@@ -28,6 +28,7 @@ import BillingBox from "@/components/elements/BillingBox.vue";
 import api from "@/services/api.js";
 import Loader from "@/components/elements/Loader.vue";
 import NotFound from "@/components/elements/NotFound.vue";
+import echo from "@/services/echo.js"
 
 export default {
 
@@ -43,6 +44,11 @@ export default {
 
   mounted() {
     this.loadData()
+
+    // echo.channel('billing')
+    //     .listen('RefreshPage', () => {
+    //       console.log('Recebeu uma atualização em tempo real');
+    //     });
   },
 
   data() {

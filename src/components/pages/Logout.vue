@@ -3,19 +3,19 @@ export default {
   name: "Logout",
 
   beforeMount() {
-    const customerId = this.loadCustomerId()
-    if (customerId) {
-      this.removeCustomerId()
+    const token = this.loadToken()
+    if (token) {
+      this.removeToken()
     }
     this.$router.push('/')
   },
 
   methods: {
-    loadCustomerId() {
-      return this.$cookies.get('lohl_customer_id')
+    removeToken() {
+      this.$cookies.remove('lohl_token')
     },
-    removeCustomerId() {
-      this.$cookies.remove('lohl_customer_id')
+    loadToken() {
+      return this.$cookies.get('lohl_token')
     }
   }
 }

@@ -49,14 +49,15 @@ export default {
 
   beforeMount() {
     // TODO: Implement a Middleware
-    this.customerId = this.loadCustomerId()
-    if (!this.customerId) this.$router.push('/')
+    const token = this.loadToken()
+    if (!token) this.$router.push('/')
+    this.accessToken = token.access_token
     this.fetchCustomer()
   },
 
   data() {
     return {
-      customerId: null,
+      accessToken: null,
       customer: null,
       loading: true,
       profileTabs: [
@@ -67,21 +68,31 @@ export default {
   },
 
   methods: {
-    loadCustomerId() {
-      return this.$cookies.get('lohl_customer_id')
+    loadToken() {
+      return this.$cookies.get('lohl_token')
     },
 
     fetchCustomer() {
       this.loading = true
-      api.get('customers/' + this.customerId)
+      api.get('customer', this.config)
           .then((response) => {
-            this.customer = response.data
+            this.customer = response.data.data
           })
           .finally(() => {
             this.loading = false
           })
     },
   },
+
+  computed: {
+    config() {
+      return {
+        headers: {
+          'Authorization': 'Bearer ' + this.accessToken
+        }
+      }
+    }
+  }
 }
 </script>
 

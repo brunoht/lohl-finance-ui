@@ -70,8 +70,8 @@ export default {
 
   methods: {
     loadData() {
-      this.form.notification_email = this.data.notification_email
-      this.form.notification_whatsapp = this.data.notification_whatsapp
+      this.form.notification_email = this.data.email
+      this.form.notification_whatsapp = this.data.whatsapp
     },
     submitForm() {
       console.log(this.form)

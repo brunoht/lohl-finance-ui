@@ -78,8 +78,9 @@ export default {
 
   beforeMount() {
     // TODO: Implement a Middleware
-    this.customerId = this.loadCustomerId()
-    if (!this.customerId) this.$router.push('/')
+    const token = this.loadToken()
+    if (!token) this.$router.push('/')
+    this.accessToken = token.access_token
   },
 
   mounted() {
@@ -88,7 +89,7 @@ export default {
 
   data() {
     return {
-      customerId: null,
+      accessToken: null,
       loadingContracts: true,
       loadingBillings: true,
       contracts: null,
@@ -98,8 +99,8 @@ export default {
 
   methods: {
 
-    loadCustomerId() {
-      return this.$cookies.get('lohl_customer_id')
+    loadToken() {
+      return this.$cookies.get('lohl_token')
     },
 
     loadData() {
@@ -109,22 +110,19 @@ export default {
 
     loadContract() {
       this.loadingContracts = true
-      api.post('/contracts', {
-        customer_id: this.customerId
-      })
-      .then((response) => {
-        this.contracts = response.data.data
-      })
-      .finally(() => {
-        this.loadingContracts = false
-      })
+
+      api.get('/contracts', this.config)
+        .then((response) => {
+          this.contracts = response.data.data
+        })
+        .finally(() => {
+          this.loadingContracts = false
+        })
     },
 
     loadBillings() {
       this.loadingBillings = true
-      api.post('/billings/open', {
-        customer_id: this.customerId
-      })
+      api.get('/billings/open', this.config)
       .then((response) => {
         this.billings = response.data.data
       })
@@ -133,5 +131,15 @@ export default {
       })
     },
   },
+
+  computed: {
+    config() {
+      return {
+        headers: {
+          'Authorization': 'Bearer ' + this.accessToken
+        }
+      }
+    }
+  }
 }
 </script>

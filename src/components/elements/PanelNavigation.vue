@@ -9,7 +9,7 @@
         </router-link>
       </div>
 
-      <div v-if="customerId !== null" class="flex flex-1 justify-end space-x-3">
+      <div v-if="isConnected" class="flex flex-1 justify-end space-x-3">
         <Link :to="{ name: 'contracts' }">Dashboard</Link>
         <Link :to="{ name: 'profile', params: {filter: 'cobranca'} }">Meus Dados</Link>
         <Link :to="{ name: 'logout' }">Sair</Link>
@@ -31,16 +31,17 @@ export default {
     Link: PanelNavigationLink
   },
   beforeMount() {
-    this.customerId = this.loadCustomerId()
+    const token = this.loadToken()
+    if (token) this.isConnected = true
   },
   data() {
     return {
-      customerId: null,
+      isConnected: false,
     }
   },
   methods: {
-    loadCustomerId() {
-      return this.$cookies.get('lohl_customer_id')
+    loadToken() {
+      return this.$cookies.get('lohl_token')
     },
   }
 }

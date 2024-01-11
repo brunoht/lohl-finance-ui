@@ -37,7 +37,9 @@ import BillingTab from "@/components/elements/BillingTab.vue"
 import PanelContainer from "@/components/elements/PanelContainer.vue"
 import api from "@/services/api.js";
 export default {
+
   name: "Billings",
+
   components: {
     Layout: Panel,
     Container: PanelContainer,
@@ -45,14 +47,18 @@ export default {
     BillingItem,
     BillingTab
   },
+
   beforeMount() {
     // TODO: Implement a Middleware
-    this.customerId = this.loadCustomerId()
-    if (!this.customerId) this.$router.push('/')
+    const token = this.loadToken()
+    if (!token) this.$router.push('/')
+    this.accessToken = token.access_token
   },
+
   mounted() {
     this.loadData()
   },
+
   created() {
     // watch the params of the route to fetch the data again
     this.$watch(
@@ -65,29 +71,31 @@ export default {
         { immediate: false }
     )
   },
+
   data() {
     return {
-      customerId: null,
+      accessToken: null,
       billings: [],
       loadingBillings: true
     }
   },
+
   methods: {
-    loadCustomerId() {
-      return this.$cookies.get('lohl_customer_id')
+
+    loadToken() {
+      return this.$cookies.get('lohl_token')
     },
+
     loadData() {
       const filter = this.$route.params.filter
       if (filter === 'abertas') this.loadOpenedBills()
       if (filter === 'pendentes') this.loadPendingBills()
       if (filter === 'pagas') this.loadPayedBills()
     },
+
     loadOpenedBills() {
-      console.log('opened bills')
       this.loadingBillings = true
-      api.post('/billings/open', {
-        customer_id: this.customerId
-      })
+      api.get('/billings/open', this.config)
       .then((response) => {
         this.billings = response.data.data
       })
@@ -95,12 +103,10 @@ export default {
         this.loadingBillings = false
       })
     },
+
     loadPendingBills() {
-      console.log('pending bills')
       this.loadingBillings = true
-      api.post('/billings/pending', {
-        customer_id: this.customerId
-      })
+      api.get('/billings/pending', this.config)
       .then((response) => {
         this.billings = response.data.data
       })
@@ -108,12 +114,10 @@ export default {
         this.loadingBillings = false
       })
     },
+
     loadPayedBills() {
-      console.log('payed bills')
       this.loadingBillings = true
-      api.post('/billings/payed', {
-        customer_id: this.customerId
-      })
+      api.get('/billings/payed', this.config)
       .then((response) => {
         this.billings = response.data.data
       })
@@ -121,31 +125,16 @@ export default {
         this.loadingBillings = false
       })
     },
-    dateFormat(date) {
-      return moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY')
-    },
-    isExpired(date) {
-      const today = moment()
-      const diff = today.diff(moment(date, 'YYYY-MM-DD'), 'days')
-      return (diff > 0)
-    },
-    hasAlert(date) {
-      const today = moment()
-      const diff = today.diff(moment(date, 'YYYY-MM-DD'), 'days')
-      return (diff >= -30)
-    },
-    t(text) {
-      const lang = {
-        'pending': 'Pendente',
-        'finished': 'Concluído',
-        'open': 'Aberto',
+  },
+
+  computed: {
+    config() {
+      return {
+        headers: {
+          'Authorization': 'Bearer ' + this.accessToken
+        }
       }
-      return lang[text] ?? text
-    },
-    openNewBrowserTab(id) {
-      const routeData = this.$router.resolve({name: 'billing', params: {id: id}})
-      window.open(routeData.href, '_blank');
-    },
+    }
   }
 }
 </script>

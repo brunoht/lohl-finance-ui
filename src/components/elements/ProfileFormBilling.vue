@@ -14,7 +14,7 @@
             </div>
           </div>
 
-          <div class="sm:col-span-2">
+          <div class="sm:col-span-4">
             <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Nome</label>
             <div class="mt-2">
               <input v-model="form.name" type="text" id="name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
@@ -28,17 +28,17 @@
             </div>
           </div>
 
-          <div class="sm:col-span-3">
-            <label for="email" class="block text-sm font-medium leading-6 text-gray-900">E-mail</label>
+          <div class="sm:col-span-2">
+            <label for="phone_01" class="block text-sm font-medium leading-6 text-gray-900">Telefone</label>
             <div class="mt-2">
-              <input v-model="form.email" id="email" type="email" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+              <input v-model="form.phone_01" id="phone_01" type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
             </div>
           </div>
 
-          <div class="sm:col-span-3">
-            <label for="phone" class="block text-sm font-medium leading-6 text-gray-900">Telefone</label>
+          <div class="sm:col-span-2">
+            <label for="phone_02" class="block text-sm font-medium leading-6 text-gray-900">Telefone</label>
             <div class="mt-2">
-              <input v-model="form.phone" id="phone" type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
+              <input v-model="form.phone_02" id="phone_02" type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
             </div>
           </div>
 
@@ -132,7 +132,9 @@ import {format, unformat} from "@/services/date.js";
 
 export default {
   name: "ProfileFormBilling",
+
   props: ['data'],
+
   components: {
     PhotoIcon,
     UserCircleIcon,
@@ -164,16 +166,16 @@ export default {
   methods: {
     loadData() {
       this.form.cpf = this.data.cpf
-      this.form.birthdate = this.data.birthdate ? format(this.data.birthdate) : ''
+      this.form.birthdate = this.data.customer.birthdate ? format(this.data.customer.birthdate) : ''
       this.form.name = this.data.name
-      this.form.email = this.data.email
-      this.form.phone = this.data.phone
-      this.form.address_postcode = this.data.address_postcode
-      this.form.address = this.data.address
-      this.form.address_number = this.data.address_number
-      this.form.address_neighborhood = this.data.address_neighborhood
-      this.form.address_city = this.data.address_city
-      this.form.address_state = this.data.address_state
+      this.form.phone_01 = this.data.customer.phone_01
+      this.form.phone_02 = this.data.customer.phone_02
+      this.form.address_postcode = this.data.customer.address_postcode
+      this.form.address = this.data.customer.address
+      this.form.address_number = this.data.customer.address_number
+      this.form.address_neighborhood = this.data.customer.address_neighborhood
+      this.form.address_city = this.data.customer.address_city
+      this.form.address_state = this.data.customer.address_state
     },
 
     submitForm() {
