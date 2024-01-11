@@ -44,11 +44,7 @@ export default {
 
   mounted() {
     this.loadData()
-
-    // echo.channel('billing')
-    //     .listen('RefreshPage', () => {
-    //       console.log('Recebeu uma atualização em tempo real');
-    //     });
+    this.listener(this.$route.params.uuid)
   },
 
   data() {
@@ -91,6 +87,13 @@ export default {
       .finally(() => {
         this.loadingBilling = false
       })
+    },
+
+    listener(uuid) {
+      let channel = echo.channel(`billing.${uuid}`);
+      channel.listen('.refresh', (data) => {
+        this.loadData()
+      });
     },
 
     // loadData() {
