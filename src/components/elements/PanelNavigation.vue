@@ -25,24 +25,21 @@
 
 <script>
 import PanelNavigationLink from "@/components/elements/PanelNavigationLink.vue"
+import {useAuthStore} from '@/stores/auth.js'
+const auth = useAuthStore()
+
 export default {
   name: "PanelNavigation",
   components: {
     Link: PanelNavigationLink
   },
   beforeMount() {
-    const token = this.loadToken()
-    if (token) this.isConnected = true
+    if (auth.loadToken()) this.isConnected = true
   },
   data() {
     return {
       isConnected: false,
     }
-  },
-  methods: {
-    loadToken() {
-      return this.$cookies.get('lohl_token')
-    },
   }
 }
 </script>
