@@ -82,10 +82,12 @@
 </template>
 
 <script>
-import api from "@/services/api.js"
 import Auth from '@/components/layouts/Auth.vue'
 import { useVuelidate } from '@vuelidate/core'
-import {required, minLength, maxLength, numeric} from '@vuelidate/validators'
+import {required} from '@vuelidate/validators'
+import {useAuthStore} from "@/stores/auth.js";
+
+const auth = useAuthStore()
 
 export default {
 
@@ -100,8 +102,7 @@ export default {
   },
 
   beforeMount() {
-    const token = this.loadToken()
-    if (token) this.$router.push({name: 'contracts'})
+    if (auth.loadToken()) this.$router.push({name: 'contracts'})
   },
 
   data() {
@@ -135,39 +136,19 @@ export default {
         this.error = null
         this.success = null
 
-        api.post('/auth/login', {
-          email: this.email,
-          password: this.password,
-        })
-        .then((response) => {
-          if (response.status === 200) {
-            this.success = "Cadastro localizado. Redirecionando..."
-            const data = response.data
-            this.storeToken(data)
-            this.$router.push({name: 'contracts'})
-          } else {
-            this.error = "Cadastro não localizado."
-          }
-        })
-        .catch((error) => {
+        const response = await auth.login(this.email, this.password)
+
+        if (response) {
+          this.success = "Cadastro localizado. Redirecionando..."
+          this.$router.push({name: 'contracts'})
+        } else {
           this.error = "Cadastro não localizado."
-          console.error(error);
-        })
-        .finally(() => {
-          this.loading = false
-          this.v$.$reset()
-        });
+        }
+
+        this.loading = false
+        this.v$.$reset()
       }
     },
-
-    storeToken(token) {
-      // TODO: implement a State Management (recommended: Pinia)
-      this.$cookies.set('lohl_token', token)
-    },
-
-    loadToken() {
-      return this.$cookies.get('lohl_token')
-    }
   }
 }
 </script>

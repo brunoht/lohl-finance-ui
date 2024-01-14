@@ -1,22 +1,19 @@
+<template></template>
+
 <script>
+
+import {useAuthStore} from "@/stores/auth.js";
+const auth = useAuthStore()
+
 export default {
   name: "Logout",
 
   beforeMount() {
-    const token = this.loadToken()
+    const token = auth.loadToken()
     if (token) {
-      this.removeToken()
+      auth.removeToken()
     }
     this.$router.push('/')
   },
-
-  methods: {
-    removeToken() {
-      this.$cookies.remove('lohl_token')
-    },
-    loadToken() {
-      return this.$cookies.get('lohl_token')
-    }
-  }
 }
 </script>

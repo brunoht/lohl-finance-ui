@@ -29,13 +29,14 @@
 </template>
 
 <script>
-import moment from "moment"
 import Panel from "@/components/layouts/Panel.vue"
 import BillingItem from "@/components/elements/BillingItem.vue"
 import PanelNavigation from "@/components/elements/PanelNavigation.vue"
 import BillingTab from "@/components/elements/BillingTab.vue"
 import PanelContainer from "@/components/elements/PanelContainer.vue"
 import api from "@/services/api.js";
+import {useAuthStore} from '@/stores/auth.js'
+const auth = useAuthStore()
 export default {
 
   name: "Billings",
@@ -46,13 +47,6 @@ export default {
     Navigation: PanelNavigation,
     BillingItem,
     BillingTab
-  },
-
-  beforeMount() {
-    // TODO: Implement a Middleware
-    const token = this.loadToken()
-    if (!token) this.$router.push('/')
-    this.accessToken = token.access_token
   },
 
   mounted() {
@@ -81,10 +75,6 @@ export default {
   },
 
   methods: {
-
-    loadToken() {
-      return this.$cookies.get('lohl_token')
-    },
 
     loadData() {
       const filter = this.$route.params.filter
@@ -131,7 +121,7 @@ export default {
     config() {
       return {
         headers: {
-          'Authorization': 'Bearer ' + this.accessToken
+          'Authorization': 'Bearer ' + auth.loadToken().access_token
         }
       }
     }

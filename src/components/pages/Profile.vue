@@ -33,6 +33,8 @@ import api from "@/services/api.js"
 import H2 from "@/components/elements/H2.vue"
 import Tabs from "@/components/elements/Tabs.vue"
 import Loader from "@/components/elements/Loader.vue";
+import {useAuthStore} from '@/stores/auth.js'
+const auth = useAuthStore()
 
 export default {
   name: "Profile",
@@ -48,10 +50,6 @@ export default {
   },
 
   beforeMount() {
-    // TODO: Implement a Middleware
-    const token = this.loadToken()
-    if (!token) this.$router.push('/')
-    this.accessToken = token.access_token
     this.fetchCustomer()
   },
 
@@ -68,9 +66,6 @@ export default {
   },
 
   methods: {
-    loadToken() {
-      return this.$cookies.get('lohl_token')
-    },
 
     fetchCustomer() {
       this.loading = true
@@ -88,7 +83,7 @@ export default {
     config() {
       return {
         headers: {
-          'Authorization': 'Bearer ' + this.accessToken
+          'Authorization': 'Bearer ' + auth.loadToken().access_token
         }
       }
     }

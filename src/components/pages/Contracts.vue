@@ -58,11 +58,14 @@
 
 <script>
 import api from "@/services/api.js"
+import {useAuthStore} from '@/stores/auth.js'
 import Panel from "@/components/layouts/Panel.vue"
 import PanelContainer from "@/components/elements/PanelContainer.vue"
 import ContractBox from "@/components/elements/ContractBox.vue"
 import BillingItem from "@/components/elements/BillingItem.vue"
 import H2 from "@/components/elements/H2.vue"
+
+const auth = useAuthStore()
 
 export default {
 
@@ -74,13 +77,6 @@ export default {
     ContractBox,
     BillingItem,
     H2
-  },
-
-  beforeMount() {
-    // TODO: Implement a Middleware
-    const token = this.loadToken()
-    if (!token) this.$router.push('/')
-    this.accessToken = token.access_token
   },
 
   mounted() {
@@ -98,10 +94,6 @@ export default {
   },
 
   methods: {
-
-    loadToken() {
-      return this.$cookies.get('lohl_token')
-    },
 
     loadData() {
       this.loadContract()
@@ -136,7 +128,7 @@ export default {
     config() {
       return {
         headers: {
-          'Authorization': 'Bearer ' + this.accessToken
+          'Authorization': 'Bearer ' + auth.loadToken().access_token
         }
       }
     }
