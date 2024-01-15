@@ -58,14 +58,11 @@
 
 <script>
 import api from "@/services/api.js"
-import {useAuthStore} from '@/stores/auth.js'
 import Panel from "@/components/layouts/Panel.vue"
 import PanelContainer from "@/components/elements/PanelContainer.vue"
 import ContractBox from "@/components/elements/ContractBox.vue"
 import BillingItem from "@/components/elements/BillingItem.vue"
 import H2 from "@/components/elements/H2.vue"
-
-const auth = useAuthStore()
 
 export default {
 

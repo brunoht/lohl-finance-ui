@@ -53,7 +53,6 @@ export default {
 
   data() {
     return {
-      accessToken: null,
       customer: null,
       loading: true,
       profileTabs: [
