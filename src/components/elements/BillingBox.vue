@@ -149,7 +149,6 @@
 
 <script>
 import moment from "moment";
-import billing from "../pages/Billing.vue";
 import { format } from "@/services/money.js";
 import { format as formatDate } from "@/services/date.js";
 import Toast from "@/components/elements/Toast.vue";
