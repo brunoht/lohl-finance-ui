@@ -1,4 +1,5 @@
 import axios from "axios"
+import { interceptors } from "@/providers/apiServiceProvider.js"
 
 const api = axios.create({
     baseURL: "http://localhost:8082/api/",
@@ -7,15 +8,6 @@ const api = axios.create({
     }
 })
 
-// redirects to force logout when 401
-api.interceptors.response.use(
-    response => response,
-    error => {
-        if (error.response && error.response.status === 401) {
-            window.location.href  = '/sair'
-        }
-        return Promise.reject(error);
-    }
-);
+interceptors(api)
 
 export default api

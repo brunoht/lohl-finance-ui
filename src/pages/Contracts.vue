@@ -103,7 +103,7 @@ export default {
     loadContract() {
       this.loadingContracts = true
 
-      api.get('/contracts', this.config)
+      api.get('/contracts')
         .then((response) => {
           this.contracts = response.data.data
         })
@@ -114,7 +114,7 @@ export default {
 
     loadBillings() {
       this.loadingBillings = true
-      api.get('/billings/open', this.config)
+      api.get('/billings/open')
       .then((response) => {
         this.billings = response.data.data
       })
@@ -124,14 +124,5 @@ export default {
     },
   },
 
-  computed: {
-    config() {
-      return {
-        headers: {
-          'Authorization': 'Bearer ' + auth.load()
-        }
-      }
-    }
-  }
 }
 </script>

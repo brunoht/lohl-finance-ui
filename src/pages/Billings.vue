@@ -35,8 +35,6 @@ import PanelNavigation from "@/components/elements/PanelNavigation.vue"
 import BillingTab from "@/components/elements/BillingTab.vue"
 import PanelContainer from "@/components/elements/PanelContainer.vue"
 import api from "@/services/api.js";
-import {useAuthStore} from '@/stores/auth.js'
-const auth = useAuthStore()
 export default {
 
   name: "Billings",
@@ -54,21 +52,15 @@ export default {
   },
 
   created() {
-    // watch the params of the route to fetch the data again
     this.$watch(
         () => this.$route.params,
-        () => {
-          this.loadData()
-        },
-        // fetch the data when the view is created and the data is
-        // already being observed
+        () => { this.loadData() },
         { immediate: false }
     )
   },
 
   data() {
     return {
-      accessToken: null,
       billings: [],
       loadingBillings: true
     }
@@ -85,7 +77,7 @@ export default {
 
     loadOpenedBills() {
       this.loadingBillings = true
-      api.get('/billings/open', this.config)
+      api.get('/billings/open')
       .then((response) => {
         this.billings = response.data.data
       })
@@ -96,7 +88,7 @@ export default {
 
     loadPendingBills() {
       this.loadingBillings = true
-      api.get('/billings/pending', this.config)
+      api.get('/billings/pending')
       .then((response) => {
         this.billings = response.data.data
       })
@@ -107,7 +99,7 @@ export default {
 
     loadPayedBills() {
       this.loadingBillings = true
-      api.get('/billings/payed', this.config)
+      api.get('/billings/payed')
       .then((response) => {
         this.billings = response.data.data
       })
@@ -116,15 +108,5 @@ export default {
       })
     },
   },
-
-  computed: {
-    config() {
-      return {
-        headers: {
-          'Authorization': 'Bearer ' + auth.load()
-        }
-      }
-    }
-  }
 }
 </script>
