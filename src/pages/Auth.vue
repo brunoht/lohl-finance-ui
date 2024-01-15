@@ -102,7 +102,7 @@ export default {
   },
 
   beforeMount() {
-    if (auth.loadToken()) this.$router.push({name: 'contracts'})
+    if (auth.load()) this.$router.push({name: 'contracts'})
   },
 
   data() {

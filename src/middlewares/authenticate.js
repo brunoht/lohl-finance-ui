@@ -11,7 +11,7 @@ const authenticate = (to, from, next) => {
         else
             next()
     } catch (error) {
-        auth.removeToken()
+        auth.remove()
         next(redirectToLogin)
     }
 }

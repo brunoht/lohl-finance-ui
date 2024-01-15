@@ -16,15 +16,15 @@ export const useAuthStore = defineStore('AuthStore', {
                 email, password
             })
             if (response) {
-                this.storeToken(response.data)
+                this.store(response.data.access_token)
                 return true
             }
             return false
         },
 
         async logout() {
-            const accessToken = this.loadToken().access_token
-            this.removeToken()
+            const accessToken = this.load()
+            this.remove()
             try {
                 const response = await api.post('/auth/logout', {}, {
                     headers: {
@@ -37,31 +37,32 @@ export const useAuthStore = defineStore('AuthStore', {
         },
 
         async user() {
-            const token = this.loadToken()
-            if (!token) return null
+            const accessToken = this.load()
+            if (!accessToken) return null
             const response = await api.post('/auth/me', {}, {
                 headers: {
-                    'Authorization': 'Bearer ' + this.loadToken().access_token
+                    'Authorization': 'Bearer ' + accessToken
                 }
             })
             return response.data
         },
 
         isLoggedIn() {
-            const token = this.loadToken()
-            return !!token;
+            const accessToken = this.load()
+            return !!accessToken;
         },
 
-        storeToken(token) {
-            $cookies.set('lohl_token', token)
+        store(accessToken) {
+            window.localStorage.setItem('access_token', JSON.stringify(accessToken))
         },
 
-        loadToken(){
-            return $cookies.get('lohl_token')
+        load(){
+            const access_token = window.localStorage.getItem('access_token')
+            return JSON.parse(access_token)
         },
 
-        removeToken() {
-            $cookies.remove('lohl_token')
+        remove() {
+            window.localStorage.removeItem('access_token')
         },
     }
 })
