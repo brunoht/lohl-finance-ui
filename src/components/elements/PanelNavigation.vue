@@ -34,7 +34,7 @@ export default {
     Link: PanelNavigationLink
   },
   beforeMount() {
-    if (auth.loadToken()) this.isConnected = true
+    if (auth.load()) this.isConnected = true
   },
   data() {
     return {

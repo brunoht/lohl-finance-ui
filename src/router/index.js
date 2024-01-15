@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router"
-import Home from "@/components/pages/Home.vue";
+import Home from "@/pages/Home.vue";
 import { middlewares } from '../providers/routeServiceProvider.js';
 
 const routes = [
@@ -11,35 +11,35 @@ const routes = [
     {
         path: '/entrar',
         name: 'auth',
-        component: () => import("@/components/pages/Auth.vue")
+        component: () => import("@/pages/Auth.vue")
     },
     {
         path: '/perfil/:filter',
         name: 'profile',
-        component: () => import("@/components/pages/Profile.vue"),
+        component: () => import("@/pages/Profile.vue"),
         meta: { requiresAuth: true },
     },
     {
         path: '/contratos',
         name: 'contracts',
-        component: () => import("@/components/pages/Contracts.vue"),
+        component: () => import("@/pages/Contracts.vue"),
         meta: { requiresAuth: true },
     },
     {
         path: '/faturas/:contractId/:filter',
         name: 'billings',
-        component: () => import("@/components/pages/Billings.vue"),
+        component: () => import("@/pages/Billings.vue"),
         meta: { requiresAuth: true },
     },
     {
         path: '/fatura/:uuid',
         name: 'billing',
-        component: () => import("@/components/pages/Billing.vue"),
+        component: () => import("@/pages/Billing.vue"),
     },
     {
         path: '/sair',
         name: 'logout',
-        component: () => import("@/components/pages/Logout.vue"),
+        component: () => import("@/pages/Logout.vue"),
         meta: { requiresAuth: true },
     },
 ]
