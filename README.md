@@ -1,7 +1,78 @@
-# Vue 3 + Vite
+# Lohl Finance UI
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Lohl Finance's frontend UI. Serves a web application.
 
-## Recommended IDE Setup
+Developed using **[Vue3](https://vuejs.org/guide/introduction.html) + [Vite](https://vitejs.dev/)**.
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Dev Environment
+
+> The following commands must be executed from a Linux Terminal. On Windows,
+run it by using WSL terminal.
+
+### Installing
+
+```shell
+bash dev build
+```
+
+### Running
+
+```shell
+bash dev up
+```
+
+## All available commands
+
+Builds container
+
+```shell
+bash dev build
+```
+
+---
+
+Starts container:
+
+```shell
+bash dev up
+```
+
+---
+
+Finishes container
+
+```shell
+bash dev down
+```
+
+---
+
+Restarts container
+
+```shell
+bash dev restart
+```
+
+---
+
+Shows a container's real-time log
+
+```shell
+bash dev logs
+```
+
+---
+
+Starts the container shell CLI
+
+```shell
+bash dev exec
+```
+
+## Access the running application 
+
+In order to access the running application, open your browser and type in this address:
+
+```
+http://localhost
+```
