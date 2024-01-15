@@ -85,7 +85,6 @@ export default {
 
   data() {
     return {
-      accessToken: null,
       loadingContracts: true,
       loadingBillings: true,
       contracts: null,

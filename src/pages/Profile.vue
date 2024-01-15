@@ -33,8 +33,6 @@ import api from "@/services/api.js"
 import H2 from "@/components/elements/H2.vue"
 import Tabs from "@/components/elements/Tabs.vue"
 import Loader from "@/components/elements/Loader.vue";
-import {useAuthStore} from '@/stores/auth.js'
-const auth = useAuthStore()
 
 export default {
   name: "Profile",
@@ -69,7 +67,7 @@ export default {
 
     fetchCustomer() {
       this.loading = true
-      api.get('customer', this.config)
+      api.get('customer')
           .then((response) => {
             this.customer = response.data.data
           })
@@ -78,16 +76,6 @@ export default {
           })
     },
   },
-
-  computed: {
-    config() {
-      return {
-        headers: {
-          'Authorization': 'Bearer ' + auth.load()
-        }
-      }
-    }
-  }
 }
 </script>
 
