@@ -121,7 +121,7 @@ export default {
     config() {
       return {
         headers: {
-          'Authorization': 'Bearer ' + auth.loadToken().access_token
+          'Authorization': 'Bearer ' + auth.load()
         }
       }
     }
