@@ -26,11 +26,13 @@ export const useAuthStore = defineStore('AuthStore', {
             const accessToken = this.load()
             this.remove()
             try {
-                const response = await api.post('/auth/logout', {}, {
-                    headers: {
-                        'Authorization': 'Bearer ' + accessToken
-                    }
-                })
+                if (accessToken) {
+                    const response = await api.post('/auth/logout', {}, {
+                        headers: {
+                            'Authorization': 'Bearer ' + accessToken
+                        }
+                    })
+                }
             } catch (error) {
                 //
             }

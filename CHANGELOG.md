@@ -4,6 +4,7 @@
 
 - feat: added Changelog
 - feat: implemented Billing receipt
+  fix: fixed double redirection when invalid token
 
 # v0.0.2
 

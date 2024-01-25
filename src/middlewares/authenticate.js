@@ -6,10 +6,11 @@ const authenticate = (to, from, next) => {
     const redirectToLogin = '/entrar'
 
     try {
-        if (to.meta.requiresAuth && !auth.isLoggedIn())
+        if (to.meta.requiresAuth && !auth.isLoggedIn()) {
             next(redirectToLogin)
-        else
+        } else {
             next()
+        }
     } catch (error) {
         auth.remove()
         next(redirectToLogin)
