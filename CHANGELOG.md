@@ -6,6 +6,7 @@
 - feat: implemented Billing receipt
 - fix: fixed double redirection when invalid token
 - fix: paid bill status
+- fix: billing item visualization rules
 
 # v0.0.2
 

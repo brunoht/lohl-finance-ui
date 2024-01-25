@@ -24,7 +24,7 @@
       <div v-else class="text-lg font-bold text-yellow-500">
 
         <span
-            v-if="billing.payment.status === 'pending'"
+            v-if="billing.payment === null || (billing.payment.hasOwnProperty('status') && billing.payment.status === 'pending')"
             :class="{
               'text-green-500': status === 'Aberta',
               'text-yellow-500': status === 'Vencendo',
@@ -84,12 +84,19 @@
           class="text-center bg-indigo-700 hover:bg-indigo-600 text-white font-medium rounded pt-2 pb-2 pr-5 pl-5"
       >
 
-        <span v-if="billing.payment.status === 'pending'">Pagar agora</span>
-        <span v-else>Ver recibo</span>
+        <span v-if="billing.payment === null || (billing.payment.hasOwnProperty('status') && billing.payment.status === 'pending')">
+          Pagar agora
+        </span>
+        <span v-else>
+          Ver recibo
+        </span>
 
       </router-link>
 
-      <div v-if="status === 'Atrasada' && billing.payment.status ==='pending'" class="text-center text-red-700 text-xs">
+      <div
+          v-if="status === 'Atrasada' && billing.payment === null || (billing.payment.hasOwnProperty('status') && billing.payment.status === 'pending')"
+          class="text-center text-red-700 text-xs"
+      >
 
         Fatura em atraso incidirá em juros, multa e bloqueio dos serviços.
 
